@@ -84,5 +84,24 @@ namespace AddressBookTestProject
             }
 
         }
+        // <summary>
+        /// Test method to retreive data using StateName or City
+        /// </summary>
+        [TestMethod]
+        public void TestMethodForRetrieveUsingStateNameOrCity()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                actual = repository.RetreiveDataUsingStateNameOrCityName(model);
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
     }
 }
