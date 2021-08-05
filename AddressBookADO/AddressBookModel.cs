@@ -18,5 +18,6 @@ namespace AddressBookADO
         public string RelationType { get; set; }
         public int addressBookId { get; set; }
         public int personId { get; set; }
+        public DateTime DateAdded { get; set; }
     }
 }
