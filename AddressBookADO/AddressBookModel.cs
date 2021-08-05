@@ -16,5 +16,7 @@ namespace AddressBookADO
         public string emailId { get; set; }
         public string addressBookName { get; set; }
         public string RelationType { get; set; }
+        public int addressBookId { get; set; }
+        public int personId { get; set; }
     }
 }

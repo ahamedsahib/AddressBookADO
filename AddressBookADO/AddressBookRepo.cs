@@ -128,7 +128,7 @@ namespace AddressBookADO
             return output;
         }
         /// <summary>
-        /// UC4-Edit the existing Contact For Address_Book_Table
+        /// Edit the existing Contact For Address_Book_Table
         /// </summary>
         /// <param name="addressBook"></param>
         /// <returns></returns>
@@ -166,6 +166,49 @@ namespace AddressBookADO
             return output;
 
         }
+
+        public string RetreiveDataUsingStateNameOrCityName(AddressBookModel model)
+        {
+            string output = string.Empty;
+            try
+            {
+                using (this.connection)
+                {
+                    string query = @"Select * from Address_Book where City='chennai' OR StateName='TN';";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    //Open Connection
+                    this.connection.Open();
+                    //Returns object of result set
+                    SqlDataReader result = command.ExecuteReader();
+
+                    //checking result set has rows are not
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            //Print deatials that are retrived
+                           ShowDetails(result, model);
+                        }
+                        //close the reader object
+                        result.Close();
+                    }
+                    output = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                output = "Unsuccessfull";
+            }
+            finally
+            {
+                //close the connection
+                connection.Close();
+            }
+            return output;
+        }
+
 
     }
 }
