@@ -127,5 +127,45 @@ namespace AddressBookADO
             }
             return output;
         }
+        /// <summary>
+        /// UC4-Edit the existing Contact For Address_Book_Table
+        /// </summary>
+        /// <param name="addressBook"></param>
+        /// <returns></returns>
+        public string UpdateContactDetails(AddressBookModel model)
+        {
+            string output = string.Empty;
+            try
+            {
+                using (connection)
+                {
+                    //Query Execution(Update)
+                    string query = @$"update Address_Book set City='{model.city}' where FirstName='{model.firstName}'";
+                    //Passing the query and dbconnection
+                    SqlCommand sqlCommand = new SqlCommand(query, this.connection);
+                    //Opening the connection
+                    connection.Open();
+                    int result = sqlCommand.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        output = "Success";
+                        Console.WriteLine("Updated SuccessFully");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+               return ex.Message;
+            }
+            finally
+            {
+                //closes the connection
+                connection.Close();
+            }
+            return output;
+
+        }
+
     }
 }
