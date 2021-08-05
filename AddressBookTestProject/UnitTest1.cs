@@ -10,6 +10,7 @@ namespace AddressBookTestProject
         AddressBookModel model;
         AddressBookRepo repository;
         AddressBookRepositoryER addressBookRepositoryER;
+        AddressBookTransaction transaction;
 
         [TestInitialize]
         public void Setup()
@@ -17,6 +18,7 @@ namespace AddressBookTestProject
             model = new AddressBookModel();
             repository = new AddressBookRepo();
             addressBookRepositoryER = new AddressBookRepositoryER();
+            transaction = new AddressBookTransaction();
         }
         /// <summary>
         /// Retrive All Data
@@ -156,6 +158,84 @@ namespace AddressBookTestProject
                 string actual, expected;
                 expected = "Success";
                 actual = addressBookRepositoryER.SortDataBasedOnFirstNameER(model);
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+        /// <summary>
+        /// Add a date added field
+        /// </summary>
+       // [TestMethod]
+        public void TestMethodForAddingDateColumn()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                actual = transaction.AddDateColumn();
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+        /// <summary>
+        /// Add a date added field
+        /// </summary>
+        [TestMethod]
+        public void TestMethodForUpdateDateAddedColumnField()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                actual = transaction.UpdateDateCoulmn();
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Retreive by date range
+        /// </summary>
+       [TestMethod]
+        public void TestMethodForRetreiveDataByDateRange()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                actual = transaction.RetreiveDataBasedOnDateRange();
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Insert Data into table
+        /// </summary>
+       [TestMethod]
+        public void InsertDataIntoTable()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                actual = transaction.InsertUsingTransaction();
                 Assert.AreEqual(actual, expected);
             }
             catch (Exception ex)
