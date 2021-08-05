@@ -9,12 +9,14 @@ namespace AddressBookTestProject
     {
         AddressBookModel model;
         AddressBookRepo repository;
+        AddressBookRepositoryER addressBookRepositoryER;
 
         [TestInitialize]
         public void Setup()
         {
             model = new AddressBookModel();
             repository = new AddressBookRepo();
+            addressBookRepositoryER = new AddressBookRepositoryER();
         }
         /// <summary>
         /// Retrive All Data
@@ -35,7 +37,7 @@ namespace AddressBookTestProject
             }
 
         }
-        [TestMethod]
+       // [TestMethod]
         public void TestMethodInsertIntoTable()
         {
             try
@@ -95,6 +97,65 @@ namespace AddressBookTestProject
                 string actual, expected;
                 expected = "Success";
                 actual = repository.RetreiveDataUsingStateNameOrCityName(model);
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+        /// <summary>
+        /// Retrive All Data based on Er diagram
+        /// </summary>
+        [TestMethod]
+        public void TestMethodForRetreiveAllDataEr()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                actual = addressBookRepositoryER.RetreiveAllDataER(model);
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Retrive All Data based on Er diagram
+        /// </summary>
+        [TestMethod]
+        public void TestMethodForRetrieveDataUsingStateNameOrCityUsingER()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                actual = addressBookRepositoryER.RetreiveAllDataStateNameOrCityER(model);
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Sort Based on first name
+        /// </summary>
+        [TestMethod]
+        public void TestMethodForSortByFirstNameUsingER()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                actual = addressBookRepositoryER.SortDataBasedOnFirstNameER(model);
                 Assert.AreEqual(actual, expected);
             }
             catch (Exception ex)
