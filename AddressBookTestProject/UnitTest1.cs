@@ -35,5 +35,30 @@ namespace AddressBookTestProject
             }
 
         }
+        [TestMethod]
+        public void TestMethodInsertIntoTable()
+        {
+            try
+            {
+                string actual, expected;
+                expected = "Success";
+                model.firstName = "Ghill";
+                model.lastName = "Rang";
+                model.address = "Anderson Street";
+                model.city = "Chennai";
+                model.stateName = "Tamilnadu";
+                model.zipCode = 600003;
+                model.phoneNumber = 8935673227;
+                model.emailId = "ikh@gmail.com";
+                model.addressBookName = "Native";
+                model.RelationType = "Family";
+                actual = repository.InsertIntoTable(model);
+                Assert.AreEqual(expected, actual);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
     }
 }

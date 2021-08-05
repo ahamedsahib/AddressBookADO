@@ -83,5 +83,49 @@ namespace AddressBookADO
 
             Console.WriteLine($"{model.firstName},{model.lastName},{model.address},{model.city},{model.stateName},{model.zipCode},{model.phoneNumber},{model.emailId},{model.addressBookName},{model.RelationType}\n");
         }
+        public string InsertIntoTable(AddressBookModel model)
+        {
+            string output = string.Empty;
+            try
+            {
+                using (connection)
+                {
+                    //Passing the stored procedure and connection
+                    SqlCommand sqlCommand = new SqlCommand("dbo.InsertDetails",this.connection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    //Adding the value
+                    sqlCommand.Parameters.AddWithValue("@FirstName", model.firstName);
+                    sqlCommand.Parameters.AddWithValue("@LastName", model.lastName);
+                    sqlCommand.Parameters.AddWithValue("@Address", model.address);
+                    sqlCommand.Parameters.AddWithValue("@City", model.city);
+                    sqlCommand.Parameters.AddWithValue("@StateName", model.stateName);
+                    sqlCommand.Parameters.AddWithValue("@ZipCode", model.zipCode);
+                    sqlCommand.Parameters.AddWithValue("@PhoneNum", model.phoneNumber);
+                    sqlCommand.Parameters.AddWithValue("@EmailId", model.emailId);
+                    sqlCommand.Parameters.AddWithValue("@AddressBookName", model.addressBookName);
+                    sqlCommand.Parameters.AddWithValue("@RelationType", model.RelationType);
+                    //Opening the connection
+                    connection.Open();
+                    //returns the number of rows updated
+                    var result = sqlCommand.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        output = "Success";
+                        Console.WriteLine("Inserted Successfully");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                //Closing the connection
+                connection.Close();
+            }
+            return output;
+        }
     }
 }
