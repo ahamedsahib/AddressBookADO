@@ -60,5 +60,29 @@ namespace AddressBookTestProject
                 Console.WriteLine(e.Message);
             }
         }
+        /// <summary>
+        /// Methods to Uodate details of a contact person
+        /// </summary>
+        [TestMethod]
+        public void UpdateDataUsingStoredProcedure()
+        {
+            try
+            {
+                string actual, expected;
+                //Setting values to model object
+                model.firstName = "Mohideen";
+                model.city = "Nurweliya";
+
+                //Expected
+                expected = "Success";
+                actual = repository.UpdateContactDetails(model);
+                Assert.AreEqual(actual, expected);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
     }
 }
