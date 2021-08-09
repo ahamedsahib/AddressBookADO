@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Text;
+using System.Threading;
 
 namespace AddressBookADO
 {
@@ -11,6 +13,7 @@ namespace AddressBookADO
 
 
         SqlConnection connection = new SqlConnection(connectionString);
+        List<AddressBookModel> addressBookModels = new List<AddressBookModel>();
 
         /// <summary>
         /// Add date added column
@@ -226,6 +229,62 @@ namespace AddressBookADO
                 return output;
             }
         }
+        /// <summary>
+        /// retrieve and add multiple data to the list
+        /// </summary>
+        public void RetreiveAndAddMultipleDataToList()
+        {
+            try
+            {
+                string query = @"SELECT ab.AddressBookId,ab.AddressBookName,p.PersonId,p.FirstName,p.LastName,p.Address,p.City,p.StateName,p.ZipCode,p.DateAdded,
+                                p.PhoneNumber,p.EmailId,pt.PersonType FROM
+                                AddressBook AS ab
+                                INNER JOIN Person AS p ON ab.AddressBookId = p.AddressBookId
+                                INNER JOIN PersonTypesRelation as pr On pr.PersonId = p.PersonId
+                                INNER JOIN PersonTypes AS pt ON pt.PersonTypeId = pr.PersonTypeId;";
+
+                SqlCommand sqlCommand = new SqlCommand(query, this.connection);
+                connection.Open();
+                SqlDataReader result = sqlCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        //Print deatials that are retrived
+                        PrintDetails(result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            connection.Close();
+        }
+        /// <summary>
+        /// method to retreive data and calculate Elpasedtime for retrieval  using thread
+        /// </summary>
+        /// <returns></returns>
+        public string RetreiveDataUsingThread()
+        {
+            string output = string.Empty;
+            try
+            {
+                Stopwatch stopWatch = new Stopwatch();
+                //start the stopwatch
+                stopWatch.Start();
+                RetreiveAndAddMultipleDataToList();
+                //stop stopwatch
+                stopWatch.Stop();
+                Console.WriteLine($"Duration : {stopWatch.ElapsedMilliseconds} milliseconds");
+                output = "success";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+            return output;
+        }
 
 
         /// <summary>
@@ -233,6 +292,8 @@ namespace AddressBookADO
         /// </summary>
         public void PrintDetails(SqlDataReader result)
         {
+            try 
+            { 
             AddressBookModel model = new AddressBookModel();
             //reatreive data and print details
             model.addressBookId = Convert.ToInt32(result["AddressBookId"]);
@@ -248,8 +309,18 @@ namespace AddressBookADO
             model.emailId = Convert.ToString(result["EmailId"]);
             model.RelationType = Convert.ToString(result["PersonType"]);
             model.DateAdded = (DateTime)result["DateAdded"];
+                Thread thread = new Thread(() =>
+                {
+                    Console.WriteLine($"{model.addressBookId},{model.personId},{model.firstName},{model.lastName},{model.address},{model.city},{model.stateName},{model.zipCode},{model.phoneNumber},{model.emailId},{model.DateAdded},{model.addressBookName},{model.RelationType}\n");
+                    addressBookModels.Add(model);
+                });
 
-            Console.WriteLine($"{model.addressBookId},{model.personId},{model.firstName},{model.lastName},{model.address},{model.city},{model.stateName},{model.zipCode},{model.phoneNumber},{model.emailId},{model.DateAdded},{model.addressBookName},{model.RelationType}\n");
+                thread.Start();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
     }
